@@ -1,0 +1,68 @@
+body {
+    /* margin: 0; */
+    /* box-sizing: border-box; */
+    /* width: 100vw; */
+    /* height: 100vh; */
+    /* overflow: hidden; */
+    /* display: flex; */
+}
+
+#dropZoneBox {
+    width: 2rem;
+    height: 2rem;
+    border: black solid 1px;
+    background: #add8e6;
+}
+
+/* Left here, center the letter A inside the tile */
+#letter-tile {
+    margin: 0%;
+    padding: 0%;
+    width: 1.9rem;
+    height: 1.9rem;
+    border: black solid 1px;
+    background: #32CD32;
+    text-align: center;
+    font-size: 15px;
+}
+
+#player-rack {
+    margin: 5px 5px 5px 5px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: #add8e6;
+}
+
+#main1 {
+    margin: 10px 10px 10px 10px;
+
+    display: grid;
+    grid-template-columns: repeat(15, 2rem);
+}
+
+#main2   {
+    margin: 10px 10px 10px 10px;
+    width: 25rem;
+    height: 5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: greenyellow;
+    display: flex;
+}
+
+
+
+
+
+/* #letter-tile div[draggable] {
+    display: inline-block;
+    width: 8vw;
+    background: white;
+    color: black;
+    margin: 1vw;
+    padding: 2em;
+    text-align: center;
+    border-radius: 0.5em;
+} */

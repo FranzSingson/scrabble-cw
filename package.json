@@ -1,0 +1,27 @@
+{
+  "name": "scrabble-cw",
+  "version": "1.0.0",
+  "description": "Testing",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/franz-up2011325/scrabble-cw.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/franz-up2011325/scrabble-cw/issues"
+  },
+  "homepage": "https://github.com/franz-up2011325/scrabble-cw#readme",
+  
+  "eslintConfig": {
+    "extends": "portsoc",
+    "root": true,
+    "env": {
+      "browser": true
+    }
+  }
+}

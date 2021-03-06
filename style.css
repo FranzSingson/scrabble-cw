@@ -7,6 +7,9 @@ body {
     /* display: flex; */
 }
 
+h1 {
+    margin-left: 10px;
+}
 
 section {
     width: 2rem;
@@ -25,7 +28,6 @@ section {
 
 
 
-/* Left here, center the letter A inside the tile */
 .letter-tile {
     margin: 0%;
     padding: 0%;
@@ -64,6 +66,9 @@ section {
 }
 
 
+#player-score-section {
+    display: flex;
+}
 
 
 
@@ -136,3 +141,6 @@ section {
 
 
 
+/* #result {
+    display: none; */
+}

@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <meta charset="UTF-8">
 <title>Scrabble</title>
+<link rel="icon" type="image/png" href="Sicon.png">
 <h1>Scrabble Game</h1>
 <link rel="stylesheet" href="style.css">
 
 <main id="main1"></main>
 <main id="main2"></main>
 
-<div>
-<button type="btn-quit" onclick="window.close();">Quit</button>
+
 
 <br>
+<p>Enter your word here:</p>
+<input id=word placeholder="Word"></input>
+<button id="sbmt">Submit word</button>
+<p id=result></p>
 
-<label for="sbmt-word">Enter your word here:</label><br>
-<input type="text" id="sbmt-word" name="word"><br>
-<button type="submit">Submit Word</button>
 
+<br>
+<div id="player-score-section">
+	<p>Player score:</p>
+	<p id="player-score">0</p>
 </div>
 
 
-<script src="script.js"></script>
+<br>
+
+
+<div>
+	<button type="btn-quit" onclick="window.close();">Quit</button>
+	<br>
+</div>
+
+<script src="script.mjs"></script>
 
 <head>
 

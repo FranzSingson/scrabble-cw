@@ -1,13 +1,13 @@
-let newPlayerLetters = ["IGNORE", "S", "A", "L", "R", "S", "O", "T", "E", "L", "A", "R", "A", "D", "I", "I", "D", "Y", "O", "I", "I",
+let newPlayerLetters = ["STARTER", "S", "A", "L", "R", "S", "O", "T", "E", "L", "A", "R", "A", "D", "I", "I", "D", "Y", "O", "I", "I",
     "M", "Z", "C", "A", "I", "W", "T", "O", "G", "Y", "G", "U", "M", "V", "X", "P", "E", "I", "E", "U", "A", "N", "E", "P", "R",
     "J", "O", "E", "S", "A", "H", "S", " ", "Q", "N", "O", "A", "W", "E", "D", "O", "D", "F", "I", "N", "N", "U", "B", "E",
     "T", "G", "T", "I", "V", "R", "T", "A", "R", "E", "I", "N", "A", "L", " ", "N", "O", "U", "R", "C", "O", "E", "L", "E",
     "E", "E", "H", "T", "F", "K", "B"];
 
 let count = 0;
+let playerScore = 0;
 
-
-// Board Names
+// Board
 
 function makeBoard() {
     for (let i = 1; i < 226; i += 1) {
@@ -15,12 +15,11 @@ function makeBoard() {
         newSection.id = `dropzone-box${i}`;
         newSection.className = "all-boxes";
 
-        const elemMain = document.getElementById("main1");
+        const elemMain = document.getElementById("main-board");
         elemMain.appendChild(newSection);
     }
 }
 
-// import { set3W } from './initBoard.mjs';
 function set3W() {
     const box3Ws = document.querySelectorAll("#dropzone-box1, #dropzone-box8, #dropzone-box15, #dropzone-box106, #dropzone-box120, #dropzone-box211, #dropzone-box218, #dropzone-box225");
     for (const box3W of box3Ws) {
@@ -58,7 +57,7 @@ function set2W() {
     }
 }
 
-function setBoardColour() {
+function initBoard() {
     makeBoard();
     set3W();
     set3L();
@@ -66,19 +65,20 @@ function setBoardColour() {
     set2W();
 }
 
-setBoardColour();
+initBoard();
 
 
 
 
+// Tiles and Letters
 
 function makePlayerRack() {
-    for (let i = 1; i < 8; i += 1) {
+    for (let i = 0; i < 7; i += 1) {
         const makeRack = document.createElement("section");
         makeRack.id = `player-rack${i}`;
         makeRack.className = "class-player-rack"
 
-        const elemMain2 = document.getElementById("main2");
+        const elemMain2 = document.getElementById("main-rack");
         elemMain2.appendChild(makeRack);
     }
 }
@@ -101,7 +101,7 @@ function makeStartingLetters() {
         makeTile.appendChild(node);
         // }
 
-        const elemDiv = document.getElementById(`player-rack${count}`);
+        const elemDiv = document.getElementById(`player-rack${i}`);
         elemDiv.appendChild(makeTile);
     }
 }
@@ -109,10 +109,38 @@ makeStartingLetters();
 
 
 
+function insertNewLetters() {
+    const emptyRacks = document.querySelectorAll(".class-player-rack");
+    for (const emptyRack of emptyRacks) {
+        if (emptyRack.children.length < 1) {
+            const makeTile = document.createElement("div");
+            count++;
+            makeTile.id = `letter-tile${count}`;
+            makeTile.className = "letter-tile";
+            makeTile.draggable = true;
 
 
+            const node = document.createTextNode(`${newPlayerLetters[count]}`);
+            makeTile.appendChild(node);
+
+            emptyRack.appendChild(makeTile);
+        }
+    }
+    allHandlers();
+}
 
 
+function storeAcceptedWordsOnBoard() {
+    const allBoxes = document.querySelectorAll(".all-boxes");
+    for (const allBox of allBoxes) {
+        if (allBox.children.length > 0) {
+            const elems = document.querySelectorAll("#main-board>section .letter-tile");
+            for (const elem of elems) {
+            elem.draggable = false;
+            }
+        }
+    }
+}
 
 
 
@@ -154,7 +182,7 @@ function boardHandler() {
 
 // Handlers for the dropzone on the player rack
 function playerRackHandler() {
-    for (i = 1; i < 8; i += 1) {
+    for (i = 0; i < 7; i += 1) {
         const playerRackDropzone = document.querySelectorAll(`#player-rack${i}`);   //Makes the rack a dropzone
         for (const dropzone2 of playerRackDropzone) {
             dropzone2.addEventListener('dragover', dragOverHandler);
@@ -201,6 +229,7 @@ function report(data, error = false, target = '#responses') {
 async function checkWord() {
     const word = document.querySelector('#word');
     const result = document.querySelector('#result');
+    const score = document.querySelector('#player-score');
 
     if (word.value.length === 0) {
         result.textContent = 'Enter a word to check its validity.';
@@ -213,6 +242,10 @@ async function checkWord() {
     switch (response.status) {
         case 200:
             result.textContent = word.value + ' is a valid word';
+            playerScore += word.value.length;
+            score.textContent = playerScore;
+            storeAcceptedWordsOnBoard();
+            insertNewLetters();
             break;
         case 400:
             result.textContent = word.value + ' is too short';
@@ -228,7 +261,6 @@ async function checkWord() {
 function pageLoaded() {
     const submitButton = document.querySelector('#sbmt');
     submitButton.addEventListener('click', checkWord);
-    submitButton.addEventListener('click', insertNewLetters);
 }
 
 window.addEventListener('load', pageLoaded);
@@ -236,27 +268,44 @@ window.addEventListener('load', pageLoaded);
 
 
 
-function insertNewLetters() {
-    const emptyRacks = document.querySelectorAll(".class-player-rack");
-    for (const emptyRack of emptyRacks) {
-        if (emptyRack.children.length < 1) {
-                const makeTile = document.createElement("div");
-                count++;
-                makeTile.id = `letter-tile${count}`;
-                makeTile.className = "letter-tile";
-                makeTile.draggable = true;
 
-                // const node = document.createTextNode(`${newPlayerLetters[newPlayerLetters.length - i]}`);
 
-                const node = document.createTextNode(`${newPlayerLetters[count]}`);
-                makeTile.appendChild(node);
 
-                emptyRack.appendChild(makeTile);
-            }
-            // console.log(rac)
-    }
-}
 
-// insertNewLetters();
 
-console.log(count);
+
+// I obtained this code from https://stackoverflow.com/questions/1224433/how-can-i-disable-highlighting-in-html-or-js
+window.addEventListener("selectstart", function(event) {
+    event.preventDefault();
+  });
+  
+//one-line version
+addEventListener("selectstart", event => event.preventDefault());
+
+
+
+
+
+
+
+// function createBoardStar() {
+//     const centreTile = document.querySelector("#dropzone-box113");
+//     const makeCanvas = document.createElement("canvas");
+//     makeCanvas.id = "canvas1";
+//     makeCanvas.width = "32";
+//     makeCanvas.height = "32";
+//     centreTile.appendChild(makeCanvas);
+// }
+// createBoardStar();
+
+
+// const starImg = new Image();
+// starImg.src = './Star.jpg';
+
+// function drawStar() {
+//     const canvas1 = document.querySelector("#canvas1");
+//     const ctx = canvas1.getContext("2d");
+//     ctx.drawImage(starImg, 0, 0, 32, 32);
+// }
+
+// drawStar();

@@ -2,41 +2,53 @@
 <meta charset="UTF-8">
 <title>Scrabble</title>
 <link rel="icon" type="image/png" href="Sicon.png">
-<h1>Scrabble Game</h1>
 <link rel="stylesheet" href="style.css">
 
-<main id="main1"></main>
-<main id="main2"></main>
 
 
 
-<br>
-<p>Enter your word here:</p>
-<input id=word placeholder="Word"></input>
-<button id="sbmt">Submit word</button>
-<p id=result></p>
+<h1>Scrabble Game</h1>
 
 
-<br>
-<div id="player-score-section">
-	<p>Player score:</p>
-	<p id="player-score">0</p>
-</div>
 
 
-<br>
+<main id="main-board"></main>
+
+	<div id="rack-and-texts">
+		<main id="main-rack"></main>
 
 
-<div>
-	<button type="btn-quit" onclick="window.close();">Quit</button>
-	<br>
-</div>
 
-<script src="script.mjs"></script>
+		<br>
+
+		<div id="lower-div">
+			<div id="submission-area">
+				<p>Enter your word here:</p>
+				<input id=word placeholder="Word"></input>
+				<button id="sbmt">Submit word</button>
+				<p id=result></p>
+			</div>
+
+
+			<div id="player-score-area">
+				<p>Player score:</p>
+				<p id="player-score">0</p>
+			</div>
+
+			<br>
+
+			<div>
+				<button type="btn-quit" onclick="window.close();">Quit</button>
+				<br>
+			</div>
+
+		</div>
+	</div>
+
+<script src="script.js"></script>
 
 <head>
-
 <body>
-
+	
 </body>
 </head>

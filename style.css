@@ -11,20 +11,39 @@ h1 {
     margin-left: 10px;
 }
 
+#main-board {
+    margin: 10px 10px 10px 10px;
+    padding: 0%;
+    width: auto;
+    display: grid;
+    grid-template-columns: repeat(15, 2rem);
+}
+
+#main-rack   {
+    margin: 10px 10px 10px 10px;
+    width: 25rem;
+    height: 5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: greenyellow;
+    display: flex;
+}
+
+#main-rack>section {
+    margin: 5px 5px 5px 5px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: #add8e6;
+}
+
 section {
     width: 2rem;
     height: 2rem;
     border: black solid 1px;
     background: white;
 }
-
-/* #main2>section {
-    width: 2rem;
-    height: 2rem;
-    border: black solid 1px;
-    background: blue;
-} */
-
 
 
 
@@ -39,49 +58,31 @@ section {
     /* font-size: 15px; */
 }
 
-#main2>section {
-    margin: 5px 5px 5px 5px;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: black solid 1px;
-    border-radius: 0.25rem;
-    background: #add8e6;
+
+#main-rack>section .letter-tile {
+        margin: 4px 5px 5px 4px;
 }
 
-#main1 {
-    margin: 10px 10px 10px 10px;
-    padding: 0%;
-    display: grid;
-    grid-template-columns: repeat(15, 2rem);
+
+#main-board>section .letter-tile {
+    font-size: 1rem;
+    background: orange;
+    position: absolute;
+    top: 0rem;
 }
 
-#main2   {
-    margin: 10px 10px 10px 10px;
-    width: 25rem;
-    height: 5rem;
-    border: black solid 1px;
-    border-radius: 0.25rem;
-    background: greenyellow;
+
+
+#player-score-area {
     display: flex;
 }
 
 
-#player-score-section {
-    display: flex;
+#lower-div {
+    margin-left: 10px;
 }
 
 
-
-/* #letter-tile div[draggable] {
-    display: inline-block;
-    width: 8vw;
-    background: white;
-    color: black;
-    margin: 1vw;
-    padding: 2em;
-    text-align: center;
-    border-radius: 0.5em;
-} */
 
 
 
@@ -118,29 +119,16 @@ section {
 }
 
 /* Centre star */
-/* #dropzone-box113 ::after {
-    background: black;
-} */
+
 #dropzone-box113::after {
     content: "Star";
   }
+
+
 
 .all-boxes {
       /* background: green; */
       position: relative;
   }
   
-  
-  #main1>section .letter-tile {
-    font-size: 1rem;
-    background: orange;
-    position: absolute;
-    top: 0rem;
-}
 
-
-
-
-/* #result {
-    display: none; */
-}

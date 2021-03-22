@@ -1,22 +1,30 @@
 {
   "name": "scrabble-cw",
   "version": "1.0.0",
-  "description": "Testing",
-  "main": "script.js",
+  "description": "",
+  "main": "svr.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon svr.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/franz-up2011325/scrabble-cw.git"
   },
-  "author": "",
+  "author": "Franz",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/franz-up2011325/scrabble-cw/issues"
   },
   "homepage": "https://github.com/franz-up2011325/scrabble-cw#readme",
-  
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-portsoc": "^0.8.1",
+    "nodemon": "^2.0.7"
+  },
   "eslintConfig": {
     "extends": "portsoc",
     "root": true,

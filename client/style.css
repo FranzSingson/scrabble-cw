@@ -1,0 +1,155 @@
+
+
+#contents {
+    display: flex;
+    width: 100%;
+    padding-left: 10rem;
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+    /* width: 100vw; */
+    /* height: 100vh; */
+    /* overflow: hidden; */
+    /* display: flex; */
+}
+
+h1 {
+    margin: 0rem 0rem 0rem 25rem;
+    font-family: serif;
+    contain: content;
+}
+
+#main-board {
+    margin: 0px 10px 10px 10px;
+    margin: auto;
+    /* padding: 0rem 0rem 0rem 12rem; */
+    /* max-width: auto; */
+    /* height: 100px; */
+    display: grid;
+    grid-template-columns: repeat(15, 2rem);
+    grid-gap: 0rem;
+}
+
+#main-rack   {
+    width: 22.8rem;
+    height: 5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: greenyellow;
+    display: flex;
+    margin-left: 4rem;
+    margin-top: 1rem;
+}
+
+#texts {
+    padding: 0rem 10rem 0rem 0rem;
+    margin: 0px 10px 10px 10px;
+    /* max-width: auto; */
+    /* max-height: auto; */
+}
+
+#main-rack>section {
+    margin: 5px 5px 5px 5px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: #add8e6;
+}
+
+section {
+    width: 2rem;
+    height: 2rem;
+    border: black solid 1px;
+    background: white;
+}
+
+
+
+.letter-tile {
+    font-size: 1rem;
+    margin: 0%;
+    padding: 0%;
+    width: 1.85rem;
+    height: 1.85rem;
+    border: black solid 1px;
+    background: #32CD32;
+    text-align: center;
+    border-radius: 0.25rem;
+    box-shadow: 2px 2px 2px #000000;
+    /* font-size: 15px; */
+}
+
+
+#main-rack>section>.letter-tile {
+        margin: 4px 5px 5px 4px;
+}
+
+
+#main-board>section .letter-tile {
+    background: orange;
+    position: absolute;
+    top: 0rem;
+}
+
+
+
+#player-score-area {
+    display: flex;
+}
+
+
+#lower-div p, #word, button{
+    background-color: white;
+}
+
+
+
+
+
+/* Board Colours */
+
+/* 3L */
+.dropzone3L {
+    background: #0859C6;
+    font-size: 0.5rem;
+}
+
+
+/* 3W */
+.dropzone3W {
+    background: #d0312d;
+    font-size: 0.5rem;
+}
+
+/* 2L */
+.dropzone2L {
+    background: #00DBFF;
+    font-size: 0.5rem;
+}
+
+/* 2W */
+.dropzone2W {
+    background: #ffb6c1;
+    font-size: 0.5rem;
+}
+
+/* Centre star */
+#dropzone-box113 {
+    background-image: url('Star.jpg');
+    background-size: cover;
+}
+
+* {
+    background-color: khaki;
+    /* background-image: url('background.jpg'); */
+}
+
+.all-boxes {
+      /* background: green; */
+      position: relative;
+  }
+  
+

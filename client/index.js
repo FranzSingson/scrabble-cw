@@ -8,6 +8,9 @@ const newPlayerLetters = ['S', 'A', 'L', 'R', 'S', 'O', 'T', 'E', 'L', 'A', 'R',
   'T', 'G', 'T', 'I', 'V', 'R', 'T', 'A', 'R', 'E', 'I', 'N', 'A', 'L', ' ', 'N', 'O', 'U', 'I', 'C', 'O', 'E', 'L', 'E',
   'E', 'D', 'H', 'T', 'F', 'K', 'B'];
 
+// const newPlayerLetters = ['F', 'A', 'R', 'M', 'H', 'O', 'R', 'N', 'P', 'A', 'S', 'T',
+//   'E', 'M', 'O', 'B', 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,];
+
 
 let count = -1;
 
@@ -163,7 +166,7 @@ async function checkInputWord() {
       result.textContent = 'The value ' + word.value + ' is not allowed';
       break;
     default:
-      result.textContent = 'the word checking service seems not to be available at this time';
+      result.textContent = 'The word checking service at the moment is unavailable';
   }
   word.value = '';
 }
@@ -205,8 +208,6 @@ const arrBoard = [
 
 const oldWords = [];
 
-let counter = -1;
-
 
 // console.log(document.querySelector('[data-y="1"][data-x="1"]'));
 
@@ -219,68 +220,75 @@ function playButton() {
 playButton();
 
 function insertInArrBoard() {
-  const allBoxes = document.querySelectorAll('.all-boxes');
-  for (const box of allBoxes) {
-    if (box.children.length > 0) {
-      const dataY = box.dataset.y;
-      const dataX = box.dataset.x;
+  // checkMiddleBox();
+  const centreBox = document.querySelector("#dropzone-box113");
+  const errorText = document.querySelector("#error-message");
 
-      const divs = box.querySelectorAll('#main-board>.all-boxes>.remove'); // This only selects tiles on the board
-      for (const div of divs) {
-        const valueLetter = div.textContent;
-        arrBoard[dataY - 1][dataX - 1] = `${valueLetter}`;
+
+  if (centreBox.children.length > 0) {
+    errorText.textContent = "";
+
+    const allBoxes = document.querySelectorAll('.all-boxes');
+    for (const box of allBoxes) {
+      if (box.children.length > 0) {
+        const dataY = box.dataset.y;
+        const dataX = box.dataset.x;
+
+        const divs = box.querySelectorAll('#main-board>.all-boxes>.remove'); // This only selects tiles on the board
+        for (const div of divs) {
+          const valueLetter = div.textContent;
+          arrBoard[dataY - 1][dataX - 1] = `${valueLetter}`;
+        }
+      } else if (box.children.length >= 0) {
+        const dataY = box.dataset.y;
+        const dataX = box.dataset.x;
+        arrBoard[dataY - 1][dataX - 1] = '';
       }
-    } else if (box.children.length >= 0) {
-      const dataY = box.dataset.y;
-      const dataX = box.dataset.x;
-      arrBoard[dataY - 1][dataX - 1] = '';
     }
+
+    looper();
+
+  } else {
+    errorText.textContent = "You must start from the box centre.";
   }
-  console.log(arrBoard);
-
-  looper();
-  // iterator();
-  // checkWord();
 }
 
-function iterator() {
-  const resultRow = iterateHorizontal(arrBoard);
-  const resultCol = iterateHorizontal(iterateVertical(arrBoard));
-  const newWords = resultRow.concat(resultCol);
+// function iterator() {
+//   const resultRow = iterateHorizontal(arrBoard);
+//   const resultCol = iterateHorizontal(iterateVertical(arrBoard));
+//   const newWords = resultRow.concat(resultCol);
 
-  // let diff = newWords.length - oldWords;
-  console.log(newWords);
+//   // let diff = newWords.length - oldWords;
+//   console.log(newWords);
 
-  // Filters the duplicates
-  for (const result of newWords) {
-    if (!oldWords.includes(result)) {
-      oldWords.push(result);
-      // wordLengths.push(result.length);
-    }
-  }
-  console.log(oldWords);
-  checkWord();
-}
+//   // Filters the duplicates
+//   for (const result of newWords) {
+//     if (!oldWords.includes(result)) {
+//       oldWords.push(result);
+//       // wordLengths.push(result.length);
+//     }
+//   }
+//   console.log(oldWords);
+//   checkWord();
+// }
 
-function iterateHorizontal(arr) {
-  let words = [];
-  arr.forEach(row => {
-    // words = words.concat(row.join('').replace(/\s\s+/g, ' ').split(' ').filter(word => word.length > 2));
-    const joinedWord = row.join('').replace(/\s\s+/g, '');
-    const wordValue = joinedWord.split(' ').filter(joinedWord => joinedWord.length > 2);
-    words = words.concat(wordValue);
-  });
-  return words;
-}
+// function iterateHorizontal(arr) {
+//   let words = [];
+//   arr.forEach(row => {
+//     // words = words.concat(row.join('').replace(/\s\s+/g, ' ').split(' ').filter(word => word.length > 2));
+//     const joinedWord = row.join('').replace(/\s\s+/g, '');
+//     const wordValue = joinedWord.split(' ').filter(joinedWord => joinedWord.length > 2);
+//     words = words.concat(wordValue);
+//   });
+//   return words;
+// }
 
-function iterateVertical(arr) {
-  return arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
-}
+// function iterateVertical(arr) {
+//   return arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+// }
 
 
 function looper() {
-  
-
   let arrWords = [];
 
   let tempVertArr = [];
@@ -291,7 +299,7 @@ function looper() {
 
     for (let x = 0; x < arrBoard[y].length; x++) {
       if (arrBoard[x][y] !== '') {
-        tempVertArr.push(arrBoard[x][y])
+        tempVertArr.push(arrBoard[x][y]);
       } else {
         arrWords.push(tempVertArr.join(''));
         tempVertArr = [];
@@ -313,17 +321,14 @@ function looper() {
         arrWords.push(tempHorArr.join(''));
         tempHorArr = [];
       }
-
     }
     arrWords.push(tempHorArr.join(''));
   }
 
-  console.log(arrWords)
-
-
 
 
   let newArrWords = [];
+
 
   for (let i = 0; i < arrWords.length; i++) {
     if (arrWords[i].length > 1) {
@@ -331,18 +336,40 @@ function looper() {
     }
   }
 
-// Compares newArrWords to oldWords
+
+  // let arrDiff = 0;
+  // const diff = newArrWords - oldWords;
+  // console.log(diff)
+
+
+  // Compares newArrWords to oldWords
   for (const newWords of newArrWords) {
     if (!oldWords.includes(newWords)) {
       oldWords.push(newWords);
-      // wordLengths.push(result.length);
+      // const arrDif =+ 1;
+      // console.log(arrDif)
+      submitWord(newWords);
+
+      const result = document.querySelector('#resultValidWord');
+      const elemList = document.createElement("li");
+      elemList.classList.add("valid-words")
+      const wordText = document.createTextNode(`${newWords}`)
+      elemList.append(wordText);
+
+      result.append(elemList);
+
     }
   }
 
-  console.log(oldWords)
-  checkWord();
-}
+  // console.log(oldWords);
+  // checkWord();
 
+
+  // if (oldWords > 1)
+  // submitWord();
+
+  limitWordList();
+}
 
 
 // Store letters to arrBoard
@@ -354,13 +381,53 @@ function looper() {
 // Use arrWords to store played words, if its invalid. Delete that word using i
 
 
-let validWordsDuped = [];
 let validWords = [];
+
 let checkCounter = -1;
 
-async function checkWord() { // Assuming every word played is valid.
+// async function checkWord() { // Assuming every word played is valid.
+//   const result = document.querySelector('#resultValidWord');
+//   const word = oldWords[++checkCounter];
+
+//   if (word.length === 0) {
+//     result.textContent = 'Enter a word to check its validity.';
+//     return;
+//   }
+
+//   const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word;
+//   const response = await fetch(url);
+
+//   switch (response.status) {
+//     case 200:
+//       result.textContent = word + ' is a valid word';
+
+
+//       // validWords.push(word);
+//       // console.log(validWords);
+//       submitWord();
+
+//       break;
+//     case 400:
+//       result.textContent = word + ' is too short';
+//       break;
+//     case 404:
+//       result.textContent = word + ' is not allowed';
+//       break;
+//     default:
+//       result.textContent = 'the word checking service seems not to be available at this time';
+//   }
+//   console.log(word);
+// }
+
+
+let submitCounter = -1;
+let acceptedWords = [];
+
+async function submitWord(word) { // Assuming every word played is valid.
+
   const result = document.querySelector('#resultValidWord');
-  const word = oldWords[++checkCounter]
+  // const score = document.querySelector('#player-score');
+  // const word = oldWords[++submitCounter];
 
   if (word.length === 0) {
     result.textContent = 'Enter a word to check its validity.';
@@ -372,102 +439,75 @@ async function checkWord() { // Assuming every word played is valid.
 
   switch (response.status) {
     case 200:
-      result.textContent = word + ' is a valid word';
+      // result.textContent = 'You just played the word: ' + word;
+
+
+
 
       validWords.push(word);
-      console.log(validWords);
-      submitWord();
+      // console.log(validWords);
+
+      makeUndraggable();
+      insertNewLetters();
+
+      updateScore();
+      acceptedWords.push(word);
 
       break;
     case 400:
       result.textContent = word + ' is too short';
       break;
     case 404:
-      result.textContent = word + ' is not allowed';
+      result.textContent = word + ' is not valid';
       break;
     default:
-      result.textContent = 'the word checking service seems not to be available at this time';
+      result.textContent = 'The word checking service at the moment is unavailable';
   }
-
-  console.log(word)
+  console.log(acceptedWords)
 }
 
 
 
 function updateScore() {
   const score = document.querySelector('#player-score');
-  let playerScore = 0;
-  // for (const validWord of validWords) {
-  //       wordLengths.push(validWord.length)
-  // }
 
+  let wordLengths = [];
+  for (const validWord of validWords) {
+    wordLengths.push(validWord.length);
+  }
+
+  // console.log(wordLengths);
+  
+  let playerScore = 0;
   for (const wordLength of wordLengths) {
     playerScore += wordLength;
   }
-
   score.textContent = playerScore;
+
 }
 
+function limitWordList() {
+  const listWords = document.querySelectorAll(".valid-words");
 
-let submitCounter = -1;
-
-async function submitWord() { // Assuming every word played is valid.
-
-  const result = document.querySelector('#resultValidWord');
-  const word = validWords[++submitCounter];
-
-  if (word.length === 0) {
-    result.textContent = 'Enter a word to check its validity.';
-    return;
-  }
-
-  const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word;
-  const response = await fetch(url);
-
-  switch (response.status) {
-    case 200:
-      result.textContent = word + ' is a valid word';
-
-      makeUndraggable();
-      insertNewLetters();
-
-      let wordLengths = [];
-
-      for (const validWord of validWords) {
-        wordLengths.push(validWord.length)
-      }
-
-      console.log(wordLengths);
-
-
-      const score = document.querySelector('#player-score');
-
-
-      let playerScore = 0;
-
-      for (const wordLength of wordLengths) {
-        playerScore += wordLength;
-      }
-      score.textContent = playerScore;
-
-      console.log(word)
-
-      break;
-    case 400:
-      result.textContent = word + ' is too short';
-      break;
-    case 404:
-      result.textContent = word + ' is not allowed';
-      break;
-    default:
-      result.textContent = 'the word checking service seems not to be available at this time';
+  if (listWords.length > 5) {
+    for (let i = 0; i < listWords.length - 5; i++) {
+      listWords[i].remove();
+    }
   }
 }
-
-
 
 
 // Have the array of words checked in the checkword function, if its good, push to validWords.
 
 
 // Store the words. Loop through words and accept valid. Push to the end of validWord.
+
+
+// When submit is pressed, for the first round, check if the centre box has a child.
+
+// checkMiddleBox() {
+//   const centreBox = document.querySelector("#dropzone-box113")
+//   if (centreBox.children.length > 0) {
+
+//   }
+// }

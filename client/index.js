@@ -1,296 +1,473 @@
-import { dragStartHandler } from "./mod.mjs";
+// import { makeUndraggable } from './mod.mjs';
+import { boardHandler, playerRackHandler, letterTileHandler, makeUndraggable } from './mod.mjs';
+// import { set3W } from "board.mjs";
 
-let newPlayerLetters = ["S", "A", "L", "R", "S", "O", "T", "E", "L", "A", "R", "A", "D", "I", "I", "D", "Y", "O", "R", "I",
-    "M", "Z", "C", "A", "I", "W", "T", "O", "G", "Y", "G", "U", "M", "V", "X", "P", "E", "I", "E", "U", "A", "N", "E", "P", "R",
-    "J", "O", "E", "S", "A", "H", "S", " ", "Q", "N", "O", "A", "W", "E", "D", "O", "E", "F", "I", "N", "N", "U", "B", "E",
-    "T", "G", "T", "I", "V", "R", "T", "A", "R", "E", "I", "N", "A", "L", " ", "N", "O", "U", "I", "C", "O", "E", "L", "E",
-    "E", "D", "H", "T", "F", "K", "B"];
+const newPlayerLetters = ['S', 'A', 'L', 'R', 'S', 'O', 'T', 'E', 'L', 'A', 'R', 'A', 'D', 'I', 'I', 'D', 'Y', 'O', 'R', 'I',
+  'M', 'Z', 'C', 'A', 'I', 'W', 'T', 'O', 'G', 'Y', 'G', 'U', 'M', 'V', 'X', 'P', 'E', 'I', 'E', 'U', 'A', 'N', 'E', 'P', 'R',
+  'J', 'O', 'E', 'S', 'A', 'H', 'S', ' ', 'Q', 'N', 'O', 'A', 'W', 'E', 'D', 'O', 'E', 'F', 'I', 'N', 'N', 'U', 'B', 'E',
+  'T', 'G', 'T', 'I', 'V', 'R', 'T', 'A', 'R', 'E', 'I', 'N', 'A', 'L', ' ', 'N', 'O', 'U', 'I', 'C', 'O', 'E', 'L', 'E',
+  'E', 'D', 'H', 'T', 'F', 'K', 'B'];
+
+
 let count = -1;
-let playerScore = 0;
-
 
 // Board
 
 function makeBoard() {
-    let boardCount = 0;
-    for (let y = 1; y < 16; y += 1) {
-        for (let x = 1; x < 16; x += 1) {
-            const newSection = document.createElement("section");
-            newSection.id = `dropzone-box${++boardCount}`;
-            newSection.dataset.x = x;
-            newSection.dataset.y = y;
-            newSection.className = "all-boxes";
+  let boardCount = 0;
+  for (let y = 1; y < 16; y += 1) {
+    for (let x = 1; x < 16; x += 1) {
+      const newDiv = document.createElement('div');
+      newDiv.id = `dropzone-box${++boardCount}`;
+      newDiv.dataset.y = y;
+      newDiv.dataset.x = x;
+      newDiv.className = 'all-boxes';
 
-            const elemMain = document.getElementById("main-board");
-            elemMain.appendChild(newSection);
-        }
+      const elemMain = document.getElementById('main-board');
+      elemMain.appendChild(newDiv);
     }
+  }
 }
-
-
 
 
 function set3W() {
-    const box3Ws = document.querySelectorAll("#dropzone-box1, #dropzone-box8, #dropzone-box15, #dropzone-box106, #dropzone-box120, #dropzone-box211, #dropzone-box218, #dropzone-box225");
-    for (const box3W of box3Ws) {
-        const node = document.createTextNode("3W");
-        box3W.classList.add("dropzone3W");
-        box3W.appendChild(node);
-    }
+  const box3Ws = document.querySelectorAll('#dropzone-box1, #dropzone-box8, #dropzone-box15, #dropzone-box106, #dropzone-box120, #dropzone-box211, #dropzone-box218, #dropzone-box225');
+  for (const box3W of box3Ws) {
+    const node = document.createTextNode('3W');
+    box3W.classList.add('dropzone3W');
+    box3W.appendChild(node);
+  }
 }
 
 function set3L() {
-    const box3Ls = document.querySelectorAll("#dropzone-box21, #dropzone-box25, #dropzone-box77, #dropzone-box81, #dropzone-box85, #dropzone-box89,#dropzone-box137, #dropzone-box141, #dropzone-box145, #dropzone-box149, #dropzone-box201, #dropzone-box205");
-    for (const box3L of box3Ls) {
-        const node = document.createTextNode("3L");
-        box3L.classList.add("dropzone3L");
-        box3L.appendChild(node);
-    }
+  const box3Ls = document.querySelectorAll('#dropzone-box21, #dropzone-box25, #dropzone-box77, #dropzone-box81, #dropzone-box85, #dropzone-box89,#dropzone-box137, #dropzone-box141, #dropzone-box145, #dropzone-box149, #dropzone-box201, #dropzone-box205');
+  for (const box3L of box3Ls) {
+    const node = document.createTextNode('3L');
+    box3L.classList.add('dropzone3L');
+    box3L.appendChild(node);
+  }
 }
 
 
 function set2L() {
-    const box2Ls = document.querySelectorAll("#dropzone-box4, #dropzone-box12, #dropzone-box37, #dropzone-box39, #dropzone-box46, #dropzone-box53, #dropzone-box60, #dropzone-box93, #dropzone-box97, #dropzone-box99, #dropzone-box103, #dropzone-box109, #dropzone-box117, #dropzone-box123, #dropzone-box127, #dropzone-box129, #dropzone-box133, #dropzone-box166, #dropzone-box173, #dropzone-box180,#dropzone-box187, #dropzone-box189");
-    for (const box2L of box2Ls) {
-        const node = document.createTextNode("2L");
-        box2L.classList.add("dropzone2L");
-        box2L.appendChild(node);
-    }
+  const box2Ls = document.querySelectorAll('#dropzone-box4, #dropzone-box12, #dropzone-box37, #dropzone-box39, #dropzone-box46, #dropzone-box53, #dropzone-box60, #dropzone-box93, #dropzone-box97, #dropzone-box99, #dropzone-box103, #dropzone-box109, #dropzone-box117, #dropzone-box123, #dropzone-box127, #dropzone-box129, #dropzone-box133, #dropzone-box166, #dropzone-box173, #dropzone-box180,#dropzone-box187, #dropzone-box189');
+  for (const box2L of box2Ls) {
+    const node = document.createTextNode('2L');
+    box2L.classList.add('dropzone2L');
+    box2L.appendChild(node);
+  }
 }
 
 function set2W() {
-    const box2Ws = document.querySelectorAll("#dropzone-box17, #dropzone-box29, #dropzone-box33, #dropzone-box43, #dropzone-box49, #dropzone-box57, #dropzone-box65, #dropzone-box71,#dropzone-box155, #dropzone-box161, #dropzone-box169, #dropzone-box177, #dropzone-box183, #dropzone-box193, #dropzone-box197, #dropzone-box209");
-    for (const box2W of box2Ws) {
-        const node = document.createTextNode("2W");
-        box2W.classList.add("dropzone2W");
-        box2W.appendChild(node);
-    }
+  const box2Ws = document.querySelectorAll('#dropzone-box17, #dropzone-box29, #dropzone-box33, #dropzone-box43, #dropzone-box49, #dropzone-box57, #dropzone-box65, #dropzone-box71,#dropzone-box155, #dropzone-box161, #dropzone-box169, #dropzone-box177, #dropzone-box183, #dropzone-box193, #dropzone-box197, #dropzone-box209');
+  for (const box2W of box2Ws) {
+    const node = document.createTextNode('2W');
+    box2W.classList.add('dropzone2W');
+    box2W.appendChild(node);
+  }
 }
 
 function initBoard() {
-    makeBoard();
-    set3W();
-    set3L();
-    set2L();
-    set2W();
+  makeBoard();
+  set3W();
+  set3L();
+  set2L();
+  set2W();
 }
 
 initBoard();
 
 
-
-
 // Tiles and Letters
 
 function makePlayerRack() {
-    for (let i = 0; i < 7; i += 1) {
-        const makeRack = document.createElement("section");
-        makeRack.id = `player-rack${i}`;
-        makeRack.className = "class-player-rack"
+  for (let i = 0; i < 7; i += 1) {
+    const makeRack = document.createElement('div');
+    makeRack.id = `player-rack${i}`;
+    makeRack.className = 'class-player-rack';
 
-        const elemMain2 = document.getElementById("main-rack");
-        elemMain2.appendChild(makeRack);
-    }
+    const elemMain2 = document.getElementById('main-rack');
+    elemMain2.appendChild(makeRack);
+  }
 }
 makePlayerRack();
 
 
-
 function makeStartingLetters() {
-    for (let i = 0; i < 7; i += 1) {
-        const makeTile = document.createElement("div");
-        count++;
-        makeTile.id = `letter-tile${count}`;
-        makeTile.className = "letter-tile";
-        makeTile.draggable = true;
+  for (let i = 0; i < 7; i += 1) {
+    const makeTile = document.createElement('div');
+    ++count;
+    makeTile.id = `letter-tile${count}`;
+    makeTile.className = 'letter-tile remove';
+    makeTile.draggable = true;
 
-        const node = document.createTextNode(`${newPlayerLetters[count]}`);
-        makeTile.appendChild(node);
+    const node = document.createTextNode(`${newPlayerLetters[count]}`);
+    makeTile.appendChild(node);
 
-        const elemDiv = document.getElementById(`player-rack${i}`);
-        elemDiv.appendChild(makeTile);
-    }
+    const elemDiv = document.getElementById(`player-rack${i}`);
+    elemDiv.appendChild(makeTile);
+  }
 }
 makeStartingLetters();
 
 function insertNewLetters() {
-    const emptyRacks = document.querySelectorAll(".class-player-rack");
-    for (const emptyRack of emptyRacks) {
-        if (emptyRack.children.length < 1) {
-            const makeTile = document.createElement("div");
-            count++;
-            makeTile.id = `letter-tile${count}`;
-            makeTile.className = "letter-tile";
-            makeTile.draggable = true;
+  const emptyRacks = document.querySelectorAll('.class-player-rack');
+  for (const emptyRack of emptyRacks) {
+    if (emptyRack.children.length < 1) {
+      const makeTile = document.createElement('div');
+      count++;
+      makeTile.id = `letter-tile${count}`;
+      makeTile.className = 'letter-tile remove';
+      makeTile.draggable = true;
 
 
-            const node = document.createTextNode(`${newPlayerLetters[count]}`);
-            makeTile.appendChild(node);
+      const node = document.createTextNode(`${newPlayerLetters[count]}`);
+      makeTile.appendChild(node);
 
-            emptyRack.appendChild(makeTile);
-        }
+      emptyRack.appendChild(makeTile);
     }
-    allHandlers();
+  }
+  allHandlers();
 }
-
-
-function storeAcceptedWordsOnBoard() {
-    const allBoxes = document.querySelectorAll(".all-boxes");
-    for (const allBox of allBoxes) {
-        if (allBox.children.length > 0) {
-            const elems = document.querySelectorAll("#main-board>section .letter-tile");
-            for (const elem of elems) {
-                elem.draggable = false;
-            }
-        }
-    }
-}
-
-
-// EventHandlers
-// function dragStartHandler(e) {
-//     const data = e.target.id;
-//     e.dataTransfer.setData('text/plain', data);
-// }
-
-function dragOverHandler(e) {
-    e.preventDefault();
-}
-
-function dropHandler(e) {
-    if (e.currentTarget.children.length < 1) {
-        const data = e.dataTransfer.getData('text/plain');
-        const dragged = document.getElementById(data);
-
-        e.currentTarget.append(dragged);
-    };
-}
-
-
-function boardHandler() {
-    const boardDropzone = document.querySelectorAll(".all-boxes");
-    for (const dropzone1 of boardDropzone) {
-        dropzone1.addEventListener('dragover', dragOverHandler);
-        dropzone1.addEventListener('drop', dropHandler);
-    }
-}
-
-function playerRackHandler() {
-    const playerRackDropzone = document.querySelectorAll(".class-player-rack");
-    for (const dropzone2 of playerRackDropzone) {
-        dropzone2.addEventListener('dragover', dragOverHandler);
-        dropzone2.addEventListener('drop', dropHandler);
-    }
-}
-
-function letterTileHandler() {
-    const divTiles = document.querySelectorAll(".letter-tile");
-    for (const div of divTiles) {
-        div.addEventListener('dragstart', dragStartHandler);
-    }
-}
-
 
 
 function allHandlers() {
-    boardHandler();
-    playerRackHandler();
-    letterTileHandler();
+  boardHandler();
+  playerRackHandler();
+  letterTileHandler();
 }
 
 allHandlers();
 
 
+async function checkInputWord() {
+  const word = document.querySelector('#word');
+  const result = document.querySelector('#resultInput');
 
+  if (word.value.length === 0) {
+    result.textContent = 'Enter a word to check its validity.';
+    return;
+  }
 
+  const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word.value;
+  const response = await fetch(url);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Word checker stuff underneath
-function report(data, error = false, target = '#responses') {
-    if (typeof data === 'string') data = [data];
-
-    const list = document.querySelector(target);
-    for (const i of data) {
-        const li = document.createElement('li');
-        li.textContent = i;
-        li.classList.toggle('error', error);
-        list.append(li);
-    }
-}
-
-async function checkWord() {
-    const word = document.querySelector('#word');
-    const result = document.querySelector('#result');
-    const score = document.querySelector('#player-score');
-
-    if (word.value.length === 0) {
-        result.textContent = 'Enter a word to check its validity.';
-        return;
-    }
-
-    const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word.value;
-    const response = await fetch(url);
-
-    switch (response.status) {
-        case 200:
-            result.textContent = word.value + ' is a valid word';
-            playerScore += word.value.length;
-            score.textContent = playerScore;
-            storeAcceptedWordsOnBoard();
-            insertNewLetters();
-            break;
-        case 400:
-            result.textContent = word.value + ' is too short';
-            break;
-        case 404:
-            result.textContent = word.value + ' is not allowed';
-            break;
-        default:
-            result.textContent = 'the word checking service seems not to be available at this time';
-    }
-    word.value='';
+  switch (response.status) {
+    case 200:
+      result.textContent = 'You can play the word: ' + word.value;
+      break;
+    case 400:
+      result.textContent = 'The value ' + word.value + ' is too short';
+      break;
+    case 404:
+      result.textContent = 'The value ' + word.value + ' is not allowed';
+      break;
+    default:
+      result.textContent = 'the word checking service seems not to be available at this time';
+  }
+  word.value = '';
 }
 
 function pageLoaded() {
-    const submitButton = document.querySelector('#sbmt');
-    submitButton.addEventListener('click', checkWord);
+  const submitButton = document.querySelector('#check');
+  submitButton.addEventListener('click', checkInputWord);
 }
 
 window.addEventListener('load', pageLoaded);
 
 
-
-
 // I obtained this code from https://stackoverflow.com/questions/1224433/how-can-i-disable-highlighting-in-html-or-js
-// window.addEventListener("selectstart", function (event) {
-//     event.preventDefault();
-// });
 
-//one-line version
-addEventListener("selectstart", event => event.preventDefault());
-
-
+// one-line version
+window.addEventListener('selectstart', event => event.preventDefault());
 
 
 // How to access the value of letters.
 // console.log(document.querySelector("#letter-tile6").textContent);
+
+const arrBoard = [
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+];
+
+const oldWords = [];
+
+let counter = -1;
+
+
+// console.log(document.querySelector('[data-y="1"][data-x="1"]'));
+
+function playButton() {
+  const play = document.querySelector('#play');
+  // play.addEventListener('click', submitWord);
+  play.addEventListener('click', insertInArrBoard);
+}
+
+playButton();
+
+function insertInArrBoard() {
+  const allBoxes = document.querySelectorAll('.all-boxes');
+  for (const box of allBoxes) {
+    if (box.children.length > 0) {
+      const dataY = box.dataset.y;
+      const dataX = box.dataset.x;
+
+      const divs = box.querySelectorAll('#main-board>.all-boxes>.remove'); // This only selects tiles on the board
+      for (const div of divs) {
+        const valueLetter = div.textContent;
+        arrBoard[dataY - 1][dataX - 1] = `${valueLetter}`;
+      }
+    } else if (box.children.length >= 0) {
+      const dataY = box.dataset.y;
+      const dataX = box.dataset.x;
+      arrBoard[dataY - 1][dataX - 1] = '';
+    }
+  }
+  console.log(arrBoard);
+
+  looper();
+  // iterator();
+  // checkWord();
+}
+
+function iterator() {
+  const resultRow = iterateHorizontal(arrBoard);
+  const resultCol = iterateHorizontal(iterateVertical(arrBoard));
+  const newWords = resultRow.concat(resultCol);
+
+  // let diff = newWords.length - oldWords;
+  console.log(newWords);
+
+  // Filters the duplicates
+  for (const result of newWords) {
+    if (!oldWords.includes(result)) {
+      oldWords.push(result);
+      // wordLengths.push(result.length);
+    }
+  }
+  console.log(oldWords);
+  checkWord();
+}
+
+function iterateHorizontal(arr) {
+  let words = [];
+  arr.forEach(row => {
+    // words = words.concat(row.join('').replace(/\s\s+/g, ' ').split(' ').filter(word => word.length > 2));
+    const joinedWord = row.join('').replace(/\s\s+/g, '');
+    const wordValue = joinedWord.split(' ').filter(joinedWord => joinedWord.length > 2);
+    words = words.concat(wordValue);
+  });
+  return words;
+}
+
+function iterateVertical(arr) {
+  return arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+}
+
+
+function looper() {
+  
+
+  let arrWords = [];
+
+  let tempVertArr = [];
+
+  // Verti
+  for (let y = 0; y < arrBoard.length; y++) {
+    tempVertArr = [];
+
+    for (let x = 0; x < arrBoard[y].length; x++) {
+      if (arrBoard[x][y] !== '') {
+        tempVertArr.push(arrBoard[x][y])
+      } else {
+        arrWords.push(tempVertArr.join(''));
+        tempVertArr = [];
+      }
+    }
+    arrWords.push(tempVertArr.join(''));
+  }
+
+  // Horiz
+  let tempHorArr = [];
+  for (let y = 0; y < arrBoard.length; y++) {
+    tempHorArr = [];
+
+    for (let x = 0; x < arrBoard[y].length; x++) {
+      if (arrBoard[y][x] !== '') {
+        tempHorArr.push(arrBoard[y][x]);
+        // console.log(tempHorArr);
+      } else {
+        arrWords.push(tempHorArr.join(''));
+        tempHorArr = [];
+      }
+
+    }
+    arrWords.push(tempHorArr.join(''));
+  }
+
+  console.log(arrWords)
+
+
+
+
+  let newArrWords = [];
+
+  for (let i = 0; i < arrWords.length; i++) {
+    if (arrWords[i].length > 1) {
+      newArrWords.push(arrWords[i]);
+    }
+  }
+
+// Compares newArrWords to oldWords
+  for (const newWords of newArrWords) {
+    if (!oldWords.includes(newWords)) {
+      oldWords.push(newWords);
+      // wordLengths.push(result.length);
+    }
+  }
+
+  console.log(oldWords)
+  checkWord();
+}
+
+
+
+// Store letters to arrBoard
+// Access/read the letters inside this array.
+//    Find horizontal words first
+//    Find vertical words second
+// When the word is valid, I want it to be deleted from the array.
+// Concat the arrays together and store it inside of newWords
+// Use arrWords to store played words, if its invalid. Delete that word using i
+
+
+let validWordsDuped = [];
+let validWords = [];
+let checkCounter = -1;
+
+async function checkWord() { // Assuming every word played is valid.
+  const result = document.querySelector('#resultValidWord');
+  const word = oldWords[++checkCounter]
+
+  if (word.length === 0) {
+    result.textContent = 'Enter a word to check its validity.';
+    return;
+  }
+
+  const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word;
+  const response = await fetch(url);
+
+  switch (response.status) {
+    case 200:
+      result.textContent = word + ' is a valid word';
+
+      validWords.push(word);
+      console.log(validWords);
+      submitWord();
+
+      break;
+    case 400:
+      result.textContent = word + ' is too short';
+      break;
+    case 404:
+      result.textContent = word + ' is not allowed';
+      break;
+    default:
+      result.textContent = 'the word checking service seems not to be available at this time';
+  }
+
+  console.log(word)
+}
+
+
+
+function updateScore() {
+  const score = document.querySelector('#player-score');
+  let playerScore = 0;
+  // for (const validWord of validWords) {
+  //       wordLengths.push(validWord.length)
+  // }
+
+  for (const wordLength of wordLengths) {
+    playerScore += wordLength;
+  }
+
+  score.textContent = playerScore;
+}
+
+
+let submitCounter = -1;
+
+async function submitWord() { // Assuming every word played is valid.
+
+  const result = document.querySelector('#resultValidWord');
+  const word = validWords[++submitCounter];
+
+  if (word.length === 0) {
+    result.textContent = 'Enter a word to check its validity.';
+    return;
+  }
+
+  const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word;
+  const response = await fetch(url);
+
+  switch (response.status) {
+    case 200:
+      result.textContent = word + ' is a valid word';
+
+      makeUndraggable();
+      insertNewLetters();
+
+      let wordLengths = [];
+
+      for (const validWord of validWords) {
+        wordLengths.push(validWord.length)
+      }
+
+      console.log(wordLengths);
+
+
+      const score = document.querySelector('#player-score');
+
+
+      let playerScore = 0;
+
+      for (const wordLength of wordLengths) {
+        playerScore += wordLength;
+      }
+      score.textContent = playerScore;
+
+      console.log(word)
+
+      break;
+    case 400:
+      result.textContent = word + ' is too short';
+      break;
+    case 404:
+      result.textContent = word + ' is not allowed';
+      break;
+    default:
+      result.textContent = 'the word checking service seems not to be available at this time';
+  }
+}
+
+
+
+
+// Have the array of words checked in the checkword function, if its good, push to validWords.
+
+
+// Store the words. Loop through words and accept valid. Push to the end of validWord.

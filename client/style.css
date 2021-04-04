@@ -1,72 +1,80 @@
-
-
-#contents {
-    display: flex;
-    width: 100%;
-    padding-left: 10rem;
+* {
+    background-color: khaki;
+    /* background-image: url('background.jpg'); */
 }
 
-body {
-    margin: 0;
-    box-sizing: border-box;
-    /* width: 100vw; */
-    /* height: 100vh; */
-    /* overflow: hidden; */
+#contents {
     /* display: flex; */
+    /* width: 100%; */
+    margin-left: 20rem;
 }
 
 h1 {
-    margin: 0rem 0rem 0rem 25rem;
+    margin: 1rem auto 0.5rem auto;
+    text-align: center;
     font-family: serif;
+    align-content: center;
     contain: content;
+    border: solid thin black;
+    background-color: pink;
 }
 
-#main-board {
-    margin: 0px 10px 10px 10px;
-    margin: auto;
-    /* padding: 0rem 0rem 0rem 12rem; */
-    /* max-width: auto; */
-    /* height: 100px; */
-    display: grid;
-    grid-template-columns: repeat(15, 2rem);
-    grid-gap: 0rem;
+
+#board-and-score {
+    display:inline-flex;
+    border: solid 3px white;
+    border-radius: 10px;
+    background: darkolivegreen;
+    padding: 10px;
+    box-shadow: 2px 2px 2px #000000;
 }
 
-#main-rack   {
-    width: 22.8rem;
-    height: 5rem;
-    border: black solid 1px;
-    border-radius: 0.25rem;
-    background: greenyellow;
-    display: flex;
-    margin-left: 4rem;
-    margin-top: 1rem;
+#score-output, #prompt {
+    display: inline-flex;
+    background:  darkolivegreen;
 }
 
-#texts {
-    padding: 0rem 10rem 0rem 0rem;
-    margin: 0px 10px 10px 10px;
-    /* max-width: auto; */
-    /* max-height: auto; */
+
+#score-area p, #word, button{
+    background-color: white;
 }
 
-#main-rack>section {
-    margin: 5px 5px 5px 5px;
-    width: 2.5rem;
-    height: 2.5rem;
-    border: black solid 1px;
-    border-radius: 0.25rem;
-    background: #add8e6;
+#score-area, #two-buttons {
+    background: darkolivegreen;
 }
 
-section {
+#submission-area {
+    margin-bottom: 1rem;
+    display: block;
+    border: solid thin black;
+    background: blue;
+}
+
+
+#scoreboard {
+    display: inline-block;
+    margin-left: 20px;
+    background:  darkolivegreen;
+}
+    
+#input-button {
+    display: block;
+    background:  blue;
+
+}
+
+#resultInput, #resultValidWord {
+    display: inline-block;
+}
+
+
+.all-boxes {
     width: 2rem;
     height: 2rem;
     border: black solid 1px;
     background: white;
+    position: relative;
 }
-
-
 
 .letter-tile {
     font-size: 1rem;
@@ -82,31 +90,48 @@ section {
     /* font-size: 15px; */
 }
 
+#main-board {
+    display: grid;
+    grid-template-columns: repeat(15, 2rem);
+    grid-gap: 0rem;
+}
 
-#main-rack>section>.letter-tile {
-        margin: 4px 5px 5px 4px;
+#main-rack   {
+    width: 22.8rem;
+    height: 5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: greenyellow;
+    display: flex;
+    margin-left: 5rem;
+    margin-top: 0.5rem;
+    box-shadow: 2px 2px 2px #000000;
+
 }
 
 
-#main-board>section .letter-tile {
+
+#main-rack>.class-player-rack {
+    margin: 5px 5px 5px 5px;
+    padding: 3px 3px 3px 3px;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: black solid 1px;
+    border-radius: 0.25rem;
+    background: #add8e6;
+}
+
+
+
+#main-board>.all-boxes>.letter-tile {
     background: orange;
     position: absolute;
     top: 0rem;
 }
 
-
-
-#player-score-area {
-    display: flex;
-}
-
-
-#lower-div p, #word, button{
-    background-color: white;
-}
-
-
-
+/* #main-board>.all-boxes>.remove {
+    background: white;
+} */
 
 
 /* Board Colours */
@@ -141,15 +166,3 @@ section {
     background-image: url('Star.jpg');
     background-size: cover;
 }
-
-* {
-    background-color: khaki;
-    /* background-image: url('background.jpg'); */
-}
-
-.all-boxes {
-      /* background: green; */
-      position: relative;
-  }
-  
-

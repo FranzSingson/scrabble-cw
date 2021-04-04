@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/franz-up2011325/scrabble-cw#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "open": "^8.0.4"
   },
   "devDependencies": {
     "eslint": "^7.22.0",

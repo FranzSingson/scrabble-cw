@@ -12,6 +12,13 @@
 	<div id="contents">
 
 		<div id="board-and-score">
+			<div id="rules">
+				<ul>Rules:
+					<li>You can not play the same word.</li>
+					<li>Check the word if it is valid before playing.</li>
+					<li>Tiles must be connected.</li>
+				  </ul>
+			</div>
 			<main id="main-board"></main>
 
 			<div id="scoreboard">
@@ -20,15 +27,15 @@
 
 					<div id="submission-area">
 						<p id="error-message"></p>
-						<p>Before pressing "Play", make sure the word is valid.</p>
-						<p id="prompt">Enter your word here:</p>
-						<div id="input-button">
+						<p id="prompt">Check your word here:</p>
+						<div id="input-check">
 							<input id=word placeholder="Word"></input>
 							<button id="check">Check word</button>
 						</div>
 						<p id=resultInput></p>
 						<br>
-						<p>Words you have played:</p>
+						<p id="words-msg">Words you have played:</p>
+						<br>
 						<p id=resultValidWord></p>
 					</div>
 

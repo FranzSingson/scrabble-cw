@@ -44,10 +44,18 @@ export function makeUndraggable() {
   const allBoxes = document.querySelectorAll('.all-boxes');
   for (const allBox of allBoxes) {
     if (allBox.children.length > 0) {
-      const elems = document.querySelectorAll('#main-board>div .letter-tile');
+      const elems = document.querySelectorAll('#main-board>.all-boxes>.letter-tile');
       for (const elem of elems) {
         elem.draggable = false;
       }
     }
   }
 }
+
+export function allHandlers() {
+  boardHandler();
+  playerRackHandler();
+  letterTileHandler();
+}
+
+// allHandlers();

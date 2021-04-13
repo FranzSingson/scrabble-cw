@@ -27,7 +27,7 @@ The special tiles on the board does not work.
 
 New words would still be accepted if they are not connected to the previously played word.
 
-If a word has been spelled such as "S ALT", the game would accept the word "alt" and update the score. 
+If a word has been spelled such as "S ALT" (an empty cell in between the word), the game would accept the word "ALT" and update the score. 
 
 It will discard the S. However, the tile "S" would become undraggable on the board.
 

@@ -4,13 +4,61 @@ import { allHandlers, makeUndraggable } from './dragDrop.mjs';
 import { initBoard } from './board.mjs';
 // import { set3W } from "board.mjs";
 
-const newPlayerLetters = ['S', 'A', 'L', 'R', 'S', 'O', 'T', 'E', 'L', 'A', 'R', 'A', 'D', 'I', 'I', 'D', 'Y', 'O', 'R', 'I',
+const lettersArr = ['S', 'A', 'L', 'R', 'S', 'O', 'T', 'E', 'L', 'A', 'R', 'A', 'D', 'I', 'I', 'D', 'Y', 'O', 'R', 'I',
   'M', 'Z', 'C', 'A', 'I', 'W', 'T', 'O', 'G', 'Y', 'G', 'U', 'M', 'V', 'X', 'P', 'E', 'I', 'E', 'U', 'A', 'N', 'E', 'P', 'R',
   'J', 'O', 'E', 'S', 'A', 'H', 'S', ' ', 'Q', 'N', 'O', 'A', 'W', 'E', 'D', 'O', 'E', 'F', 'I', 'N', 'N', 'U', 'B', 'E',
   'T', 'G', 'T', 'I', 'V', 'R', 'T', 'A', 'R', 'E', 'I', 'N', 'A', 'L', ' ', 'N', 'O', 'U', 'I', 'C', 'O', 'E', 'L', 'E',
   'E', 'D', 'H', 'T', 'F', 'K', 'B'];
 
-// const newPlayerLetters = ['L', 'A', 'Z', 'Y', 'H', 'O', 'N', 'P', 'A', 'S', 'T'];
+// const newPlayerLetters = ['F', 'A', 'R', 'M', 'H', 'O', 'N', 'P', 'A', 'S', 'T'];
+
+// const lettersArr = [
+//   'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
+//   'B', 'B',
+//   'C', 'C',
+//   'D', 'D', 'D', 'D',
+//   'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+//   'F', 'F',
+//   'G', 'G', 'G',
+//   'H', 'H',
+//   'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I',
+//   'J',
+//   'K',
+//   'L', 'L', 'L', 'L',
+//   'M', 'M',
+//   'N', 'N', 'N', 'N', 'N', 'N',
+//   'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',
+//   'P', 'P',
+//   'Q',
+//   'R', 'R', 'R', 'R', 'R', 'R',
+//   'S', 'S', 'S', 'S',
+//   'T', 'T', 'T', 'T', 'T', 'T',
+//   'U', 'U', 'U', 'U',
+//   'V', 'V',
+//   'W', 'W',
+//   'X',
+//   'Y', 'Y',
+//   'Z',
+// ];
+
+let newPlayerLetters;
+
+
+// https://www.youtube.com/watch?v=BZKFKfrxU-g&t=195s&ab_channel=zFunxWebDevelopementIdeas
+// I adapted the code from the link
+function shuffleLettersArr() {
+  let n; let m = lettersArr.length;
+  for (let i = 0; i < lettersArr.length; i++) {
+    n = Math.floor(Math.random() * lettersArr.length);
+    m = lettersArr[i];
+    lettersArr[i] = lettersArr[n];
+    lettersArr[n] = m;
+  }
+  newPlayerLetters = lettersArr;
+  // console.log(newPlayerLetters)
+}
+
+shuffleLettersArr();
 
 const letterPoint = {
   A: 1,
@@ -45,12 +93,12 @@ const letterPoint = {
 let count = -1;
 const roundsPlayed = 0;
 
+
 // Board
 initBoard();
 
 
 // Tiles and Letters
-
 function makePlayerRack() {
   const mainRack = document.getElementById('main-rack');
 
@@ -71,7 +119,7 @@ function makePlayerRack() {
 makePlayerRack();
 
 
-function makeStartingLetters() {
+function makeStartingLetters(arrayOfLetters) {
   for (let i = 0; i < 7; i += 1) {
     const makeTile = document.createElement('div');
     ++count;
@@ -82,12 +130,12 @@ function makeStartingLetters() {
 
     const para = document.createElement('p');
     para.className = 'letter-p';
-    const paraNode = document.createTextNode(`${newPlayerLetters[count]}`);
+    const paraNode = document.createTextNode(`${lettersArr[count]}`);
     para.appendChild(paraNode);
 
     const sub = document.createElement('sub');
     sub.className = 'sub-point';
-    const subNode = document.createTextNode(letterPoint[newPlayerLetters[count]]);
+    const subNode = document.createTextNode(letterPoint[lettersArr[count]]);
     sub.append(subNode);
 
 
@@ -177,8 +225,6 @@ window.addEventListener('load', pageLoaded);
 
 
 // I obtained this code from https://stackoverflow.com/questions/1224433/how-can-i-disable-highlighting-in-html-or-js
-
-// one-line version
 window.addEventListener('selectstart', event => event.preventDefault());
 
 
@@ -219,7 +265,6 @@ function insertInArrBoard() {
   const centreBox = document.querySelector('#dropzone-box113');
   const errorText = document.querySelector('#error-message');
 
-  // ++roundsPlayed;
 
   if (centreBox.children.length > 0) {
     errorText.textContent = '';
@@ -236,9 +281,6 @@ function insertInArrBoard() {
           const arrY = dataY - 1;
           const arrX = dataX - 1;
           arrBoard[arrY][arrX] = `${valueLetter}`;
-
-
-          // connectChecker(arrY, arrX, arrBoard);
         }
       } else if (box.children.length >= 0) {
         const dataY = box.dataset.y;
@@ -247,30 +289,11 @@ function insertInArrBoard() {
       }
     }
 
+
     looper();
   } else {
     errorText.textContent = 'You must start from the centre box.';
   }
-}
-
-
-function connectChecker(cellY, cellX, array) {
-  const Y = cellY + 1;
-  const X = cellX + 1;
-
-  // const tile = document.querySelector(`[data-y=${Y}][data-x=${X}]`);
-
-  // if (document.querySelector(`[data-y=${Y + 1}][data-x=${X}]`) || document.querySelector(`[data-y=${Y - 1}][data-x=${X}]`) || document.querySelector(`[data-y=${Y}][data-x=${X + 1}]`) || document.querySelector(`[data-y=${Y}][data-x=${X - 1}]`))
-
-
-  // if (document.querySelector('[data-y="8"][data-x="8"]').children.draggable = false) {
-  // console.log("olool")
-  // }
-
-  console.log(document.querySelector(`[data-y="${Y}"][data-x="${X}"]`).children);
-
-
-  // console.log(document.querySelector('[data-y="8"][data-x="8"]').children.draggble = "true");
 }
 
 
@@ -299,7 +322,6 @@ function looper() {
     for (let x = 0; x < arrBoard[y].length; x++) {
       if (arrBoard[y][x] !== '') {
         tempHorArr.push(arrBoard[y][x]);
-        // console.log(tempHorArr);
       } else {
         arrWords.push(tempHorArr.join(''));
         tempHorArr = [];
@@ -323,8 +345,6 @@ function looper() {
   for (const newWords of newArrWords) {
     if (!oldWords.includes(newWords)) {
       oldWords.push(newWords);
-      // const arrDif =+ 1;
-      // console.log(arrDif)
       submitWord(newWords);
     }
 
@@ -407,13 +427,3 @@ function limitWordList() {
     }
   }
 }
-
-// console.log(makeUndraggable());
-
-// Have the array of words checked in the checkword function, if its good, push to validWords.
-
-
-// Store the words. Loop through words and accept valid. Push to the end of validWord.
-
-
-// Check surroundings of the newly dragged letter. Check if the surrounding letter are draggable false. If so, it is a connecting word.

@@ -1,12 +1,6 @@
-const open = require('open');
-
-// opens the url in the default browser
-open('http://localhost:80/');
-
-
 const express = require('express');
 const app = express();
-const port = 80;
+const port = 8080;
 
 app.use(express.static('client'));
 
@@ -20,5 +14,6 @@ app.listen(port, function () {
 });
 
 
-// To start this, either write: node svr.js OR npm start in the terminal
-// In URL type  localhost:80
+// Note to self: To start this, either write: node svr.js OR npm start in the terminal
+// To stop, CTRL C
+// In URL type  localhost:8080

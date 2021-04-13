@@ -58,4 +58,4 @@ export function initBoard() {
   set3L();
   set2L();
   set2W();
-};
+}

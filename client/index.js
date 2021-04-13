@@ -1,47 +1,42 @@
 // import { makeUndraggable } from './mod.mjs';
 // import { boardHandler, playerRackHandler, letterTileHandler, makeUndraggable } from './mod.mjs';
-import { allHandlers, makeUndraggable } from './dragDrop.mjs';
+import { allHandlers } from './dragDrop.mjs';
 import { initBoard } from './board.mjs';
+import { checkInputWord, submitWord } from './wordChecker.mjs';
 // import { set3W } from "board.mjs";
 
-const lettersArr = ['S', 'A', 'L', 'R', 'S', 'O', 'T', 'E', 'L', 'A', 'R', 'A', 'D', 'I', 'I', 'D', 'Y', 'O', 'R', 'I',
-  'M', 'Z', 'C', 'A', 'I', 'W', 'T', 'O', 'G', 'Y', 'G', 'U', 'M', 'V', 'X', 'P', 'E', 'I', 'E', 'U', 'A', 'N', 'E', 'P', 'R',
-  'J', 'O', 'E', 'S', 'A', 'H', 'S', ' ', 'Q', 'N', 'O', 'A', 'W', 'E', 'D', 'O', 'E', 'F', 'I', 'N', 'N', 'U', 'B', 'E',
-  'T', 'G', 'T', 'I', 'V', 'R', 'T', 'A', 'R', 'E', 'I', 'N', 'A', 'L', ' ', 'N', 'O', 'U', 'I', 'C', 'O', 'E', 'L', 'E',
-  'E', 'D', 'H', 'T', 'F', 'K', 'B'];
-
-// const newPlayerLetters = ['F', 'A', 'R', 'M', 'H', 'O', 'N', 'P', 'A', 'S', 'T'];
-
-// const lettersArr = [
-//   'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
-//   'B', 'B',
-//   'C', 'C',
-//   'D', 'D', 'D', 'D',
-//   'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
-//   'F', 'F',
-//   'G', 'G', 'G',
-//   'H', 'H',
-//   'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I',
-//   'J',
-//   'K',
-//   'L', 'L', 'L', 'L',
-//   'M', 'M',
-//   'N', 'N', 'N', 'N', 'N', 'N',
-//   'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',
-//   'P', 'P',
-//   'Q',
-//   'R', 'R', 'R', 'R', 'R', 'R',
-//   'S', 'S', 'S', 'S',
-//   'T', 'T', 'T', 'T', 'T', 'T',
-//   'U', 'U', 'U', 'U',
-//   'V', 'V',
-//   'W', 'W',
-//   'X',
-//   'Y', 'Y',
-//   'Z',
-// ];
-
+let count = -1;
 let newPlayerLetters;
+const oldWords = [];
+
+const lettersArr = [
+  'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
+  'B', 'B',
+  'C', 'C',
+  'D', 'D', 'D', 'D',
+  'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+  'F', 'F',
+  'G', 'G', 'G',
+  'H', 'H',
+  'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I',
+  'J',
+  'K',
+  'L', 'L', 'L', 'L',
+  'M', 'M',
+  'N', 'N', 'N', 'N', 'N', 'N',
+  'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',
+  'P', 'P',
+  'Q',
+  'R', 'R', 'R', 'R', 'R', 'R',
+  'S', 'S', 'S', 'S',
+  'T', 'T', 'T', 'T', 'T', 'T',
+  'U', 'U', 'U', 'U',
+  'V', 'V',
+  'W', 'W',
+  'X',
+  'Y', 'Y',
+  'Z',
+];
 
 
 // https://www.youtube.com/watch?v=BZKFKfrxU-g&t=195s&ab_channel=zFunxWebDevelopementIdeas
@@ -55,47 +50,19 @@ function shuffleLettersArr() {
     lettersArr[n] = m;
   }
   newPlayerLetters = lettersArr;
-  // console.log(newPlayerLetters)
 }
 
 shuffleLettersArr();
 
-const letterPoint = {
-  A: 1,
-  B: 3,
-  C: 3,
-  D: 2,
-  E: 1,
-  F: 4,
-  G: 2,
-  H: 4,
-  I: 1,
-  J: 8,
-  K: 5,
-  L: 1,
-  M: 3,
-  N: 1,
-  O: 1,
-  P: 3,
-  Q: 10,
-  R: 1,
-  S: 1,
-  T: 1,
-  U: 1,
-  V: 4,
-  W: 4,
-  X: 8,
-  Y: 4,
-  Z: 10,
+export const letterPoint = {
+  A: 1, B: 3, C: 3, D: 2, E: 1, F: 4, G: 2, H: 4, I: 1, J: 8, K: 5, L: 1, M: 3, N: 1, O: 1, P: 3, Q: 10, R: 1, S: 1, T: 1, U: 1, V: 4, W: 4, X: 8, Y: 4, Z: 10,
 };
-
-
-let count = -1;
-const roundsPlayed = 0;
 
 
 // Board
 initBoard();
+makePlayerRack();
+makeStartingLetters();
 
 
 // Tiles and Letters
@@ -116,10 +83,9 @@ function makePlayerRack() {
 
   mainRack.append(rackSub);
 }
-makePlayerRack();
 
 
-function makeStartingLetters(arrayOfLetters) {
+function makeStartingLetters() {
   for (let i = 0; i < 7; i += 1) {
     const makeTile = document.createElement('div');
     ++count;
@@ -148,10 +114,7 @@ function makeStartingLetters(arrayOfLetters) {
   }
 }
 
-
-makeStartingLetters();
-
-function insertNewLetters() {
+export function insertNewLetters() {
   const emptyRacks = document.querySelectorAll('.class-player-rack');
   for (const emptyRack of emptyRacks) {
     if (emptyRack.children.length < 1) {
@@ -188,48 +151,9 @@ function insertNewLetters() {
 allHandlers();
 
 
-async function checkInputWord() {
-  const word = document.querySelector('#word');
-  const result = document.querySelector('#resultInput');
-
-  if (word.value.length === 0) {
-    result.textContent = 'Enter a word to check its validity.';
-    return;
-  }
-
-  const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word.value;
-  const response = await fetch(url);
-
-  switch (response.status) {
-    case 200:
-      result.textContent = 'You can play the word: ' + word.value;
-      break;
-    case 400:
-      result.textContent = 'The value ' + word.value + ' is too short';
-      break;
-    case 404:
-      result.textContent = 'The value ' + word.value + ' is not allowed';
-      break;
-    default:
-      result.textContent = 'The word checking service at the moment is unavailable';
-  }
-  word.value = '';
-}
-
-function pageLoaded() {
-  const submitButton = document.querySelector('#check');
-  submitButton.addEventListener('click', checkInputWord);
-}
-
-window.addEventListener('load', pageLoaded);
-
-
 // I obtained this code from https://stackoverflow.com/questions/1224433/how-can-i-disable-highlighting-in-html-or-js
 window.addEventListener('selectstart', event => event.preventDefault());
 
-
-// How to access the value of letters.
-// console.log(document.querySelector("#letter-tile6").textContent);
 
 const arrBoard = [
   ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -249,14 +173,13 @@ const arrBoard = [
   ['', '', '', '', '', '', '', '', '', '', '', '', '', ''],
 ];
 
-const oldWords = [];
-
-
-// console.log(document.querySelector('[data-y="1"][data-x="1"]'));
 
 function playButton() {
   const play = document.querySelector('#play');
   play.addEventListener('click', insertInArrBoard);
+
+  const submitButton = document.querySelector('#check');
+  submitButton.addEventListener('click', checkInputWord);
 }
 
 playButton();
@@ -296,7 +219,7 @@ function insertInArrBoard() {
   }
 }
 
-
+// 2D array iterator
 function looper() {
   const arrWords = [];
 
@@ -337,93 +260,12 @@ function looper() {
     }
   }
 
-  // console.log(newArrWords);
-  // console.log(oldWords);
-
 
   // Compares newArrWords to oldWords
   for (const newWords of newArrWords) {
     if (!oldWords.includes(newWords)) {
       oldWords.push(newWords);
       submitWord(newWords);
-    }
-
-    // console.log(oldWords);
-  }
-}
-
-const validWords = [];
-
-
-async function submitWord(word) {
-  const result = document.querySelector('#resultValidWord');
-  const errorText = document.querySelector('#error-message');
-
-  if (word.length === 0) {
-    result.textContent = 'Enter a word to check its validity.';
-    return;
-  }
-
-  const url = 'https://dictionary-dot-sse-2020.nw.r.appspot.com/' + word;
-  const response = await fetch(url);
-
-  switch (response.status) {
-    case 200:
-      validWords.push(word);
-
-      const result = document.querySelector('#resultValidWord');
-      const elemList = document.createElement('li');
-      elemList.classList.add('valid-words');
-      const wordText = document.createTextNode(`${word}`);
-      elemList.append(wordText);
-
-      result.append(elemList);
-
-      updateScore(word);
-      makeUndraggable();
-      insertNewLetters();
-
-      break;
-    case 400:
-      result.textContent = word + ' is too short';
-      break;
-    case 404:
-      errorText.textContent = word + ' is not valid';
-      break;
-    default:
-      result.textContent = 'The word checking service at the moment is unavailable';
-  }
-  console.log(validWords);
-  limitWordList();
-}
-
-const eachLetterPoints = [];
-
-function updateScore(word) {
-  const score = document.querySelector('#player-score');
-
-  const wordSplitted = word.split('');
-
-  for (let i = 0; i < wordSplitted.length; i++) {
-    eachLetterPoints.push(letterPoint[wordSplitted[i]]);
-  }
-
-  console.log(eachLetterPoints);
-
-  let playerScore = 0;
-  for (const eachLetterPoint of eachLetterPoints) {
-    playerScore += eachLetterPoint;
-  }
-  score.textContent = playerScore;
-}
-
-
-function limitWordList() {
-  const listWords = document.querySelectorAll('.valid-words');
-
-  if (listWords.length > 5) {
-    for (let i = 0; i < listWords.length - 5; i++) {
-      listWords[i].remove();
     }
   }
 }
